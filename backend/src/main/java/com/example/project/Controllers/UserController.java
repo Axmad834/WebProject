@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,20 +58,13 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage()) ;
         }
 
-        //проверка авторизация
-//        @RequestMapping(value = "/login", method = RequestMethod.POST)
-//        public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest, HttpSession session) {
-//            boolean valid = userService.loginUser(loginRequest);
-//            if (valid) {
-//                session.setAttribute("userEmail", loginRequest.getEmail());
-//                return ResponseEntity.ok("Login successful");
-//            }
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
-//        }
-
-
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<?> logoutUser(HttpSession session){
+        session.invalidate();
+        return ResponseEntity.ok().build();
+    }
 
 
 

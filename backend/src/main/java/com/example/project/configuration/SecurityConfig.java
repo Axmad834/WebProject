@@ -51,7 +51,7 @@ public class SecurityConfig extends WebSecurityConfiguration {
         return httpSecurity
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/register", "api/login" ,"/profile").permitAll() // Разрешаем доступ к API регистрации
+                        .requestMatchers("/api/register", "api/login" ,"/profile" , "api/logout").permitAll() // Разрешаем доступ к API регистрации
                         .anyRequest().authenticated() // Требуем аутентификацию для всех остальных запросов
                 )// Включаем поддержку CORS
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
