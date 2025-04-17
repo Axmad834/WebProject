@@ -5,6 +5,8 @@ import com.example.project.DTO.UserRegistrationDto;
 import com.example.project.Entities.User;
 import com.example.project.Repositores.UserRepository;
 import com.example.project.Services.UserService;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +23,14 @@ public class UserController {
 
     //For registration
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody UserRegistrationDto dto){
-        User registeredUser = userService.registerUser(dto);
-        return ResponseEntity.ok(registeredUser);
+    public ResponseEntity<?> registerUser(@Valid @RequestBody UserRegistrationDto dto){
+        try{
+            User registeredUser = userService.registerUser(dto);
+            return ResponseEntity.ok(registeredUser.getId());
+        }
+        catch (RuntimeException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
 
@@ -35,18 +42,31 @@ public class UserController {
 
     //For login in existing acc
     @PostMapping("/login")
-    public  ResponseEntity<?> loginUser(@RequestBody LoginRequest loginDto){
+    public  ResponseEntity<?> loginUser(@RequestBody LoginRequest loginDto , HttpSession session){
+        boolean valid =  userService.loginUser(loginDto);
+
         try{
-            boolean valid =  userService.loginUser(loginDto);
             if(valid){
+                session.setAttribute("userEmail", loginDto.getEmail());
                 return ResponseEntity.ok(valid);
             }
-            else{
-                return ResponseEntity.badRequest().body("Wrong email or password");
+            else {
+                return ResponseEntity.badRequest().body("Invalid username or password");
             }
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage()) ;
         }
+
+        //проверка авторизация
+//        @RequestMapping(value = "/login", method = RequestMethod.POST)
+//        public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest, HttpSession session) {
+//            boolean valid = userService.loginUser(loginRequest);
+//            if (valid) {
+//                session.setAttribute("userEmail", loginRequest.getEmail());
+//                return ResponseEntity.ok("Login successful");
+//            }
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+//        }
 
 
     }
