@@ -7,9 +7,7 @@ import lombok.Data;
 //it is an object through which we get data out of response
 @Data
 public class UserRegistrationDto {
-    @NotBlank
     private String firstName;
-    @NotBlank
     private String lastName;
 
     private Integer age;
