@@ -1,52 +1,70 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+export interface UserProfile {
+    id: number;
+    email: string;
+    role: string;
+    // ...можно добавить остальные поля, которые приходят из /profile
+}
 
 export const useAuth = () => {
-    const [loggedIn, setLoggedIn] = useState<boolean>(false);
+    const [loggedIn, setLoggedIn] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [user, setUser] = useState<UserProfile | null>(null);
     const navigate = useNavigate();
 
     useEffect(() => {
         const checkSession = async () => {
             try {
-                const response = await fetch("http://localhost:8080/profile", {
+                const res = await fetch("http://localhost:8080/profile", {
                     credentials: "include",
                 });
-
-                if (response.ok) {
+                if (res.ok) {
+                    const profile: UserProfile = await res.json();
+                    setUser(profile);
                     setLoggedIn(true);
                 } else {
+                    setUser(null);
                     setLoggedIn(false);
                 }
-            } catch (error) {
+            } catch (e) {
+                setUser(null);
                 setLoggedIn(false);
             } finally {
                 setLoading(false);
             }
         };
-
         checkSession();
     }, []);
 
-
     const logout = async () => {
-        navigate("/home")
+        navigate("/home");
         try {
-            const response = await fetch("http://localhost:8080/logout", {
+            const res = await fetch("http://localhost:8080/logout", {
                 method: "POST",
                 credentials: "include",
             });
-            if (response.ok) {
+            if (res.ok) {
+                setUser(null);
                 setLoggedIn(false);
             } else {
-                throw new Error("Logout failed");
+                console.error("Logout failed");
             }
-
-        } catch (error) {
-            console.error("Logout error:", error);
+        } catch (e) {
+            console.error("Logout error:", e);
         }
     };
 
-    return { loggedIn, loading  ,setLoggedIn , logout};
+
+
+
+    return {
+        loggedIn,
+        loading,
+        user,
+        isAdmin: user?.role === "ADMIN",
+        logout,
+    };
 };

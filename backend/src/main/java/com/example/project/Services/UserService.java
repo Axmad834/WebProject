@@ -2,6 +2,7 @@ package com.example.project.Services;
 
 import com.example.project.DTO.LoginRequest;
 import com.example.project.DTO.UserRegistrationDto;
+import com.example.project.Entities.Role;
 import com.example.project.Entities.User;
 import com.example.project.Repositores.UserRepository;
 //import com.example.project.Security.JwtTokenUtil;
@@ -57,6 +58,18 @@ public class UserService {
             return true;
         }
         throw new RuntimeException("Wrong password");
+    }
+
+
+    public void giveAdminRoleToUser(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Присваиваем роль ADMIN (или добавляем в список ролей, если они множественные)
+        user.setRole(Role.valueOf("ADMIN"));
+
+        // Сохраняем изменения в базе данных
+        userRepository.save(user);
     }
 
 

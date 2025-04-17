@@ -38,7 +38,8 @@ public class SecurityConfig extends WebSecurityConfiguration {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // Разрешаем доступ к API
                         .allowedOrigins("http://localhost:5173") // Разрешаем доступ с фронтенда
-                        .allowedMethods("GET", "POST", "PUT", "DELETE") // Разрешаем определенные HTTP методы
+                        .allowedMethods("GET", "POST", "PUT", "DELETE" , "OPTIONS") // Разрешаем определенные HTTP методы
+                        .allowedHeaders("*")
                         .allowCredentials(true); // Разрешаем отправку cookies
 
             }
@@ -51,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfiguration {
         return httpSecurity
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/register", "api/login" ,"/profile" , "api/logout").permitAll() // Разрешаем доступ к API регистрации
+                        .requestMatchers("/api/register", "api/login" ,"/profile" , "api/logout" ,"/addCourse","/getCourse" , "courses/{id}" ,"/deleteCourse/{id}").permitAll() // Разрешаем доступ к API регистрации
                         .anyRequest().authenticated() // Требуем аутентификацию для всех остальных запросов
                 )// Включаем поддержку CORS
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
