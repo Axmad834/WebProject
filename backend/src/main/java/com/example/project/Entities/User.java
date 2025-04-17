@@ -14,10 +14,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    public User() {
-        // пустой конструктор
-    }
-
 
     private String firstName;
     private String lastName;
