@@ -52,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfiguration {
         return httpSecurity
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/register", "api/login" ,"/profile" , "api/logout" ,"/addCourse","/getCourse" , "courses/{id}" ,"/deleteCourse/{id}").permitAll() // Разрешаем доступ к API регистрации
+                        .requestMatchers("/api/register", "api/login" ,"/profile" , "api/logout" ,"api/addCourse","api/getCourse" , "api/courses/{id}" ,"api/deleteCourse/{id}").permitAll() // Разрешаем доступ к API регистрации
                         .anyRequest().authenticated() // Требуем аутентификацию для всех остальных запросов
                 )// Включаем поддержку CORS
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))

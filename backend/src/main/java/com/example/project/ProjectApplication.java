@@ -22,7 +22,7 @@ public class ProjectApplication {
         return args -> {
             // Пример присваивания роли ADMIN пользователю с ID 1
             userService.giveAdminRoleToUser(8L);  // Здесь 1L - это ID пользователя, которому ты хочешь дать роль
-            System.out.println("User with ID 1 is now an ADMIN");
+            System.out.println("User with  is now an ADMIN");
         };
     }
 }
