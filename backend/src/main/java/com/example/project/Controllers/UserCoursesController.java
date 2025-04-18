@@ -41,7 +41,7 @@ public class UserCoursesController {
 
     @DeleteMapping("/delete")
     public void deleteCourseFromDashboard(@PathVariable Long userId , @PathVariable Long courseId ){
-        userCoursesService.deleteCourseForUser(userId,courseId);
+        userCoursesService.deleteCourseForUser(userId ,courseId);
     }
 
 
