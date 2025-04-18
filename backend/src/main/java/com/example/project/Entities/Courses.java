@@ -1,9 +1,6 @@
 package com.example.project.Entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,4 +17,9 @@ public class Courses {
     private String title;
     private String courseDescription;
     private String imageUrl;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
 }

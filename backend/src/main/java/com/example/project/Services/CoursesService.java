@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class CoursesServise {
+public class CoursesService {
     private final CoursesRepository coursesRepository;
 
 
@@ -50,19 +50,6 @@ public class CoursesServise {
         coursesRepository.deleteById(id);
     }
 
-
-
-//    public Courses getCourseById(Long id){
-//        return coursesRepository.findById(id).orElseThrow(()-> new RuntimeException("Course not found"));
-//    }
-//
-//    public List<Courses> getAllCourses(){
-//        return coursesRepository.findAll();
-//    }
-
-//    public Courses findByTitle(CoursesDto coursesDto){
-//        return coursesRepository.findByTitle(coursesDto.getTitle()).orElseThrow(()-> new RuntimeException("Course not found"));
-//    }
 
 
 

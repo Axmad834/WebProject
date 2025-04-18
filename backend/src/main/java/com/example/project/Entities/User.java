@@ -3,6 +3,8 @@ package com.example.project.Entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "users")
 @Data
@@ -30,5 +32,6 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-
+    @OneToMany(mappedBy = "user" , cascade = CascadeType.ALL)
+    private List<Courses> courses;
 }
