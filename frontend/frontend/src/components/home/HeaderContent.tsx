@@ -1,4 +1,4 @@
-export const HeaderContent = () => {
+export const  HeaderContent = () => {
   return (
     <div className="mx-auto max-w-2xl lg:mx-0">
       <h2 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
