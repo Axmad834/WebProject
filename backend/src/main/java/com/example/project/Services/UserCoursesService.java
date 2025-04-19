@@ -51,7 +51,8 @@ public class UserCoursesService {
             throw new RuntimeException("User is not allowed to delete course");
         }
 
-        coursesRepository.delete(courses);
+        courses.setUser(null);  // Обнуляем связь с пользователем
+        coursesRepository.save(courses);
     }
 
 

@@ -6,6 +6,7 @@ import com.example.project.Entities.Courses;
 import com.example.project.Entities.User;
 import com.example.project.Services.UserCoursesService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -31,17 +32,20 @@ public class UserCoursesController {
 
     //validation check if is it true user of courses
     @GetMapping("/getUserCourses")
-    public List<Courses> getUserCourses(@AuthenticationPrincipal User currentUser) {
-        return userCoursesService.getUserCourses(currentUser.getId());
+    public ResponseEntity<?> getUserCourses(@RequestParam Long userId) {
+        // просто возвращаем курсы по userId без доп. проверок
+        List<Courses> courses = userCoursesService.getUserCourses(userId);
+        return ResponseEntity.ok(courses);
     }
 
 
-    @GetMapping("/{userId}")
-    public List<Courses> getUserCourses(@PathVariable Long userId){
-        return userCoursesService.getUserCourses(userId);
-    }
 
-    @DeleteMapping("/delette/{userId}")
+//    @GetMapping("/{userId}")
+//    public List<Courses> getUserCourses(@PathVariable Long userId){
+//        return userCoursesService.getUserCourses(userId);
+//    }
+
+    @DeleteMapping("/delete/{userId}/{courseId}")
     public void deleteCourseFromDashboard(@PathVariable Long userId , @PathVariable Long courseId ){
         userCoursesService.deleteCourseForUser(userId ,courseId);
     }

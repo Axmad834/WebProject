@@ -1,8 +1,8 @@
 import { Body } from "../components/Body";
 import { LoginLogo } from "../components/login/LoginLogo";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FormEvent, useState } from "react";
-import { auth } from "../firebase/firebase";
+// import { auth } from "../firebase/firebase";
 import {
   // doSignInWithEmailAndPassword,
   doSignInWithGoogle,
@@ -70,7 +70,7 @@ export function Login() {
 
   return (
       <Body>
-        {auth.currentUser && <Navigate to="/home" replace />}
+        {/*{auth.currentUser && <Navigate to="/home" replace />}*/}
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-36 lg:px-8">
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
             <LoginLogo />

@@ -5,6 +5,8 @@ import { Navbar } from "../components/home/Navbar";
 import { Sidebar } from "../components/home/Sidebar";
 import defaultCourseImage from "../assets/defaultAvatar.png";
 
+
+
 interface Course {
     id: number;
     title: string;
@@ -16,14 +18,18 @@ export const Dashboard = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [userCourses, setUserCourses] = useState<Course[]>([]);
     const [loading, setLoading] = useState(true);
-    const { loggedIn, loading: authLoading } = useAuth();
+    const { loggedIn,user , loading: authLoading  } = useAuth();
 
     useEffect(() => {
-        if (authLoading || !loggedIn) return;
+        //security
+        if (authLoading || !loggedIn || !user) return;
+
+        const userId = user.id;
 
         const fetchUserCourses = async () => {
             try {
-                const res = await fetch("http://localhost:8080/dashboard/getUserCourses", {
+                //security part
+                const res = await fetch(`http://localhost:8080/dashboard/getUserCourses?userId=${userId}`, {
                     credentials: "include",
                 });
                 if (!res.ok) throw new Error("Ошибка при получении курсов пользователя");
@@ -36,14 +42,18 @@ export const Dashboard = () => {
             }
         };
 
+
         fetchUserCourses();
     }, [authLoading, loggedIn]);
 
     const handleRemove = async (courseId: number) => {
         if (!window.confirm("Удалить курс из личного кабинета?")) return;
 
+        const userId = user.id;
+
+        //translate in eng
         try {
-            const res = await fetch(`http://localhost:8080/dashboard/delete`, {
+            const res = await fetch(`http://localhost:8080/dashboard/delete/${userId}/${courseId}`, {
                 method: "DELETE",
                 credentials: "include",
             });
