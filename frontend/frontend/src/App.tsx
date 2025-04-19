@@ -5,7 +5,9 @@ import { Contact } from "./routes/Contact";
 import { Courses } from "./routes/Courses";
 import { Login } from "./routes/Login";
 import Profile from "./routes/Profile";
-import { Signup } from "./routes/Signup"; // Импортируем компонент профиля
+import { Signup } from "./routes/Signup";
+import { Dashboard } from "./routes/Dashboard"; // импортируйте ваш компонент Dashboard
+
 
 
 function App() {
@@ -20,6 +22,7 @@ function App() {
           <Route path="/profile" element={<Profile/>} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
       </Router>
     </>

@@ -1,5 +1,6 @@
 package com.example.project.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,6 +21,7 @@ public class Courses {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore // it will prevent recursive dependencies because onetoamty realationship leads to it
     private User user;
 
 }

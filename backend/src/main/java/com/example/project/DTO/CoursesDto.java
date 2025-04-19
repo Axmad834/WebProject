@@ -7,8 +7,8 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class CoursesDto {
-    @NotNull
+    private Long id;
     private String title;
-    private String description;
-    private String ImageUrl;
+    private String courseDescription;
+    private String imageUrl;
 }

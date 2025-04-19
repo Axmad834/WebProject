@@ -6,6 +6,8 @@ import { Sidebar } from "../components/home/Sidebar";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import defaultCourseImage from "../assets/defaultAvatar.png";
 
+
+
 interface Course {
     id: number;
     title: string;
@@ -18,7 +20,9 @@ export const Courses = () => {
     const [courses, setCourses] = useState<Course[]>([]);
     const [expandedCourseId, setExpandedCourseId] = useState<number | null>(null);
     const [loadingCourses, setLoadingCourses] = useState(true);
-    const { loggedIn, loading: authLoading, isAdmin } = useAuth();
+    const { loggedIn, loading: authLoading, isAdmin ,user } = useAuth();// или import auth from 'your-auth-context'
+    //will be used in future
+    const userId = user?.id;
 
     useEffect(() => {
         if (authLoading || !loggedIn) return;
@@ -39,7 +43,7 @@ export const Courses = () => {
         };
 
         fetchCourses();
-    }, [authLoading, loggedIn]);
+    }, [authLoading, loggedIn ]);
 
     const handleAddClick = async () => {
         const title = prompt("Enter course title");
@@ -71,30 +75,34 @@ export const Courses = () => {
         if (!courseToEdit) return;
 
         const title = prompt("Enter new course title", courseToEdit.title);
-        const description = prompt("Enter new description", courseToEdit.courseDescription);
+        const courseDescription = prompt("Enter new description", courseToEdit.courseDescription);
         const imageUrl = prompt("Enter new image URL", courseToEdit.imageUrl);
 
-        if (title && description && imageUrl) {
+        if (title && courseDescription && imageUrl) {
             try {
                 const res = await fetch(`http://localhost:8080/api/courses/${id}`, {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({ title, description, imageUrl }),
+                    body: JSON.stringify({ title, courseDescription, imageUrl }),
                     credentials: "include",
                 });
 
                 if (!res.ok) throw new Error("Ошибка при редактировании курса");
-                const updatedCourse = await res.json();
+
+                const updatedCourse = await res.json(); // Здесь должен прийти CoursesDto
                 setCourses((prevCourses) =>
-                    prevCourses.map((course) => course.id === id ? updatedCourse : course)
+                    prevCourses.map((course) =>
+                        course.id === id ? updatedCourse : course
+                    )
                 );
             } catch (e) {
                 console.error(e);
             }
         }
     };
+
 
     const handleDelete = async (id: number) => {
         if (window.confirm("Are you sure you want to delete this course?")) {
@@ -112,6 +120,34 @@ export const Courses = () => {
         }
     };
 
+
+    const handleAddToDashboard = async (courseId: number) => {
+        if (!userId) return;
+
+        const course = courses.find((c) => c.id === courseId);
+        if (!course) return;
+
+        try {
+            const response = await fetch(`http://localhost:8080/dashboard/addCourseToUser?id=${userId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(course),
+                credentials: "include",
+            });
+
+            if (response.ok) {
+                alert("Курс добавлен в ваш Dashboard");
+            } else {
+                alert("Не удалось добавить курс");
+            }
+        } catch (error) {
+            console.error("Ошибка при добавлении курса:", error);
+        }
+    };
+
+
     const toggleExpand = (id: number) => {
         setExpandedCourseId(prev => (prev === id ? null : id));
     };
@@ -123,15 +159,14 @@ export const Courses = () => {
         return <div className="p-8 text-center">Please log in to view courses.</div>;
     }
 
+
+
     return (
         <Body>
             <div className="min-h-screen pt-24 px-4 sm:px-6 lg:px-8">
                 <header className="absolute inset-x-0 top-0 z-50">
                     <Navbar onPress={() => setMobileMenuOpen(true)} />
-                    <Sidebar
-                        menuValue={mobileMenuOpen}
-                        onClose={() => setMobileMenuOpen(false)}
-                    />
+                    <Sidebar menuValue={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
                 </header>
 
                 <main>
@@ -149,9 +184,7 @@ export const Courses = () => {
                                     className="w-full h-[60%] object-cover rounded-t-xl"
                                 />
                                 <div className="p-4 flex-grow flex flex-col">
-                                    <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                                        {course.title}
-                                    </h3>
+                                    <h3 className="text-lg font-semibold text-gray-800 mb-2">{course.title}</h3>
 
                                     {expandedCourseId === course.id && (
                                         <p className="text-sm text-gray-600 mt-2 overflow-y-auto">
@@ -160,7 +193,7 @@ export const Courses = () => {
                                     )}
                                 </div>
 
-                                {isAdmin && (
+                                {isAdmin ? (
                                     <div className="absolute top-2 right-2 flex gap-1">
                                         <button
                                             onClick={(e) => {
@@ -181,9 +214,19 @@ export const Courses = () => {
                                             Delete
                                         </button>
                                     </div>
+                                ) : (
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleAddToDashboard(course.id);
+                                        }}
+                                        className="absolute bottom-2 right-2 text-blue-600 bg-white bg-opacity-75 rounded-full p-1 hover:bg-opacity-100"
+                                        title="Add to Dashboard"
+                                    >
+                                        <PlusIcon className="w-6 h-6" />
+                                    </button>
                                 )}
                             </div>
-
                         ))}
 
                         {isAdmin && (

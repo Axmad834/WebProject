@@ -21,6 +21,8 @@ public class UserCoursesController {
 
     @PostMapping("/addCourseToUser")
     public ResponseEntity<?> addCourseToUser( @RequestParam Long id,@RequestBody CoursesDto coursesDto ) {
+        System.out.println("User ID: " + id);
+        System.out.println("Course Data: " + coursesDto);
         Courses course = userCoursesService.addCourseToUser(id,coursesDto);
         return ResponseEntity.ok().body(course);
     }
@@ -28,7 +30,7 @@ public class UserCoursesController {
 
 
     //validation check if is it true user of courses
-    @GetMapping("/dashboard")
+    @GetMapping("/getUserCourses")
     public List<Courses> getUserCourses(@AuthenticationPrincipal User currentUser) {
         return userCoursesService.getUserCourses(currentUser.getId());
     }
@@ -39,7 +41,7 @@ public class UserCoursesController {
         return userCoursesService.getUserCourses(userId);
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/delette/{userId}")
     public void deleteCourseFromDashboard(@PathVariable Long userId , @PathVariable Long courseId ){
         userCoursesService.deleteCourseForUser(userId ,courseId);
     }

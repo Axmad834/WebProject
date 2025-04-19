@@ -19,7 +19,7 @@ public class CoursesService {
         Courses courses = new Courses();
 
         courses.setTitle(coursesDto.getTitle());
-        courses.setCourseDescription(coursesDto.getDescription());
+        courses.setCourseDescription(coursesDto.getCourseDescription());
         courses.setImageUrl(coursesDto.getImageUrl());
 
         return coursesRepository.save(courses);
@@ -33,16 +33,28 @@ public class CoursesService {
 
 
 
+    public CoursesDto mapToDto(Courses course) {
+        return new CoursesDto(
+                course.getId(),
+                course.getTitle(),
+                course.getCourseDescription(),
+                course.getImageUrl()
+        );
+    }
+
+
     //for put method
-    public Courses updateCourse(Long id,CoursesDto courseDto){
+    public CoursesDto updateCourse(Long id,CoursesDto courseDto){
         Courses course = coursesRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Course not found with id: " + id));
 
         course.setTitle(courseDto.getTitle());
-        course.setCourseDescription(courseDto.getDescription());
+        course.setCourseDescription(courseDto.getCourseDescription());
         course.setImageUrl(courseDto.getImageUrl());
 
-        return coursesRepository.save(course);
+        Courses saved = coursesRepository.save(course);
+
+        return mapToDto(saved);
     }
 
     //for delete mehtod

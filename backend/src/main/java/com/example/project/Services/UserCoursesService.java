@@ -19,20 +19,21 @@ public class UserCoursesService {
     private final UserRepository userRepository;
     private final CoursesService coursesService;
 
-    public Courses addCourseToUser( Long id ,CoursesDto coursesDto){
-        User user = userRepository.findById(id).orElseThrow(()->new RuntimeException("No such user"));
-        Courses courses = coursesRepository.findById(id).orElseThrow(()->new RuntimeException("No such course"));
+    public Courses addCourseToUser(Long id, CoursesDto coursesDto) {
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("No such user"));
+        Courses course = coursesRepository.findById(coursesDto.getId()).orElseThrow(() -> new RuntimeException("No such course"));
 
-        //We Do add User in Course (@ManyToOne)
-        courses.setUser(user);
-        coursesRepository.save(courses);
+        // We Do add User in Course (@ManyToOne)
+        course.setUser(user);
+        coursesRepository.save(course);  // Сохраняем курс с привязанным пользователем
 
-        //We Do add Courses intoCollection of users courses (@OneToMany)
-        user.getCourses().add(courses);
-        coursesRepository.save(courses);
+        // We Do add Course into the Collection of user's courses (@OneToMany)
+        user.getCourses().add(course);  // Добавляем курс в список курсов пользователя
+        userRepository.save(user);  // Сохраняем пользователя с обновленным списком курсов
 
-        return courses;
+        return course;
     }
+
 
     public List<Courses> getUserCourses(Long userId){
         List<Courses> courses = coursesRepository.findByUserId(userId);

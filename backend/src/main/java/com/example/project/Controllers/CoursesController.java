@@ -33,8 +33,8 @@ public class CoursesController {
     @PreAuthorize("hasRole('ADMIN')") 
     @PutMapping("courses/{id}")
     public ResponseEntity<?> updateCourse(@PathVariable Long id , @RequestBody CoursesDto coursesDto){
-        Courses course = coursesService.updateCourse(id,coursesDto);
-        return ResponseEntity.ok().body(course);
+        CoursesDto updated = coursesService.updateCourse(id,coursesDto);
+        return ResponseEntity.ok(updated);
     }
 
 

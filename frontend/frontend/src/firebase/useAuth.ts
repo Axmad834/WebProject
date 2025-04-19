@@ -15,6 +15,7 @@ export const useAuth = () => {
     const [user, setUser] = useState<UserProfile | null>(null);
     const navigate = useNavigate();
 
+
     useEffect(() => {
         const checkSession = async () => {
             try {
