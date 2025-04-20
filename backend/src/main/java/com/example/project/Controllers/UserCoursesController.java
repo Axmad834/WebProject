@@ -3,12 +3,9 @@ package com.example.project.Controllers;
 
 import com.example.project.DTO.CoursesDto;
 import com.example.project.Entities.Courses;
-import com.example.project.Entities.User;
 import com.example.project.Services.UserCoursesService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,12 +35,6 @@ public class UserCoursesController {
         return ResponseEntity.ok(courses);
     }
 
-
-
-//    @GetMapping("/{userId}")
-//    public List<Courses> getUserCourses(@PathVariable Long userId){
-//        return userCoursesService.getUserCourses(userId);
-//    }
 
     @DeleteMapping("/delete/{userId}/{courseId}")
     public void deleteCourseFromDashboard(@PathVariable Long userId , @PathVariable Long courseId ){

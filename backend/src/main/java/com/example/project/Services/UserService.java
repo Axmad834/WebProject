@@ -5,10 +5,7 @@ import com.example.project.DTO.UserRegistrationDto;
 import com.example.project.Entities.Role;
 import com.example.project.Entities.User;
 import com.example.project.Repositores.UserRepository;
-//import com.example.project.Security.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

@@ -2,7 +2,7 @@ import { Body } from "../components/Body";
 import { LoginLogo } from "../components/login/LoginLogo";
 import { useNavigate } from "react-router-dom";
 import { FormEvent, useState } from "react";
-// import { auth } from "../firebase/firebase";
+
 import {
   // doSignInWithEmailAndPassword,
   doSignInWithGoogle,
