@@ -44,8 +44,6 @@ Installation
 3. Run development server:
    npm run dev
 
-   Your application will be available at: http://localhost:5173/
-
 Production Build
 -----------------
 To create a production-ready build:
